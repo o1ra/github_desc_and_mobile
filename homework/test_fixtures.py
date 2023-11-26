@@ -3,11 +3,10 @@
 """
 import pytest
 from selene import browser, have
-
+from homework.pages.github_main_pages import MainPage
 
 @pytest.fixture
 def desktop_setup():
-    browser.config.base_url = 'https://github.com/'
     browser.config.window_width = 1920
     browser.config.window_height = 1080
 
@@ -18,7 +17,6 @@ def desktop_setup():
 
 @pytest.fixture
 def mobile_setup():
-    browser.config.base_url = 'https://github.com'
     browser.config.window_width = 414
     browser.config.window_height = 896
 
@@ -28,13 +26,14 @@ def mobile_setup():
 
 
 def test_github_desktop(desktop_setup):
-    browser.open("/")
-    browser.element('.HeaderMenu-link--sign-in').click()
-    browser.element('.auth-form-header').should(have.text('Sign in to GitHub'))
+    main_page = MainPage()
+    main_page.open()
+    main_page.click_login_button_desktop()
+    main_page.redirect_to_login_page()
 
 
 def test_github_mobile(mobile_setup):
-    browser.open("/")
-    browser.element('.Button--link').click()
-    browser.element('.HeaderMenu-link--sign-in').click()
-    browser.element('.auth-form-header').should(have.text('Sign in to GitHub'))
+    main_page = MainPage()
+    main_page.open()
+    main_page.click_login_button_mobile()
+    main_page.redirect_to_login_page()
